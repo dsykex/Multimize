@@ -2,7 +2,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
 
-const PORT_NUMBER = process.env.PORT || 7777;
+const PORT_NUMBER = 1111 || 7777;
 
 const server = express()
   .use(cors({credentials: true, origin: '*'}))
