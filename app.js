@@ -12,7 +12,7 @@ const io = socketio(server);
 
 connections=[];
 
-io.on('connection', socket => {
+/*io.on('connection', socket => {
     connections.push(socket);
     console.log('New client connected ('+connections.length+' connections).');
 
@@ -23,5 +23,5 @@ io.on('connection', socket => {
         connections.splice(connections.indexOf(socket), 1);
         console.log('Disconnected: %s sockets connected.', connections.length);
     });
-})
+})*/
 
