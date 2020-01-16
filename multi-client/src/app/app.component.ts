@@ -10,13 +10,19 @@ export class AppComponent {
   title = 'multi-client';
   port: number = 0;
   socket: any;
-
+  width: number = 100;
+  updateVal: number = 5;
   constructor()
   {
-    this.socket = io('http://localhost:7714');
+    this.socket = io('http://localhost:7777');
 
-    this.socket.on('port', port => {
-      this.port = port;
+    this.socket.on('con_msg', msg => {
+      this.port = msg;
     })
+  }
+
+  updateWidth(val)
+  {
+    this.width += val;
   }
 }
