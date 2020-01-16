@@ -1,13 +1,11 @@
 const express = require('express');
 const socketio = require('socket.io');
+const cors = require('cors');
 
 const PORT_NUMBER = process.env.PORT || 7777;
 
 const server = express()
-  .use((req, res) => {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  })
+  .use(cors({credentials: true, origin: '*'}))
   .listen(PORT_NUMBER, () => console.log(`Listening on ${PORT_NUMBER}`));
 
 const io = socketio(server);
