@@ -14,7 +14,7 @@ export class AppComponent {
   updateVal: number = 5;
   constructor()
   {
-    this.socket = io('http://localhost:7777');
+    this.socket = io('https://mighty-thicket-03422.herokuapp.com/');
 
     this.socket.on('con_msg', msg => {
       this.port = msg;
