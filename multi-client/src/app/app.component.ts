@@ -8,21 +8,21 @@ import io from 'socket.io-client';
 })
 export class AppComponent {
   title = 'multi-client';
-  port: number = 0;
+
   socket: any;
-  width: number = 100;
+  width: number = 50;
   updateVal: number = 5;
   constructor()
   {
-    this.socket = io('http://localhost:5000');
+    this.socket = io('https://mighty-thicket-03422.herokuapp.com/');
 
-    this.socket.on('con_msg', msg => {
-      this.port = msg;
+    this.socket.on('width_value', val => {
+      this.width = val;
     })
   }
 
   updateWidth(val)
   {
-    this.width += val;
+    this.socket.emit('width_changed', val)
   }
 }

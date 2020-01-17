@@ -1,3 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<h1>{{port}}</h1>
-<div class="bar" [ngStyle]="{'width': width+'%'}" (click)="updateWidth(updateVal)" ></div>
+
+<div class="container">
+    <div class="row text-center border">
+        <h1 class="display-2">Raise the bar!</h1>
+        <div class="bar" [ngStyle]="{'width': width+'%'}" (click)="updateWidth(updateVal)"></div>
+    </div>
+</div>

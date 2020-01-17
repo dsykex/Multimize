@@ -13,11 +13,18 @@ const io = socketio(server);
 
 connections=[];
 
+width = 0;
+
 io.on('connection', socket => {
     connections.push(socket);
     console.log('New client connected ('+connections.length+' connections).');
 
     socket.emit('con_msg', 'Welcome to greatss.. <3');
+
+    socket.on('width_changed', val => {
+        let newWidth = width += val;
+        socket.emit('width_value', newWidth);
+    })
 
     socket.on('disconnect', () => {
         console.log('Client disconnected')
