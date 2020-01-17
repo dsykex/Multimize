@@ -26,9 +26,9 @@ export class AppComponent {
     this.socket.on('connections_changed', cons => {
       this.connections = cons;
       if(this.connections > 1 || this.connections == 0)
-        this.adj = 'people';
+        this.adj = 'people are';
       else
-        this.adj = 'person';
+        this.adj = 'person is';
       
     })
   }

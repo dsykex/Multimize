@@ -20,6 +20,11 @@ io.on('connection', socket => {
     connections.push(socket);
     console.log('New client connected ('+connections.length+' connections).');
     socket.emit('connections_changed', connections.length);
+    connections.forEach(s => {
+       // s.emit('width_value', width);
+        s.emit('connections_changed', connections.length);
+    })
+    
 
     socket.emit('width_value', width);
 
@@ -28,7 +33,11 @@ io.on('connection', socket => {
 
         if(width >= 100)
            width=0;
-        socket.emit('width_value', width);
+        
+        connections.forEach(s => {
+            s.emit('width_value', width);
+        })
+        
     })
 
     socket.on('disconnect', () => {
@@ -36,7 +45,9 @@ io.on('connection', socket => {
         connections.splice(connections.indexOf(socket), 1);
         console.log('Disconnected: %s sockets connected.', connections.length);
 
-        socket.emit('connections_changed', connections.length);
+        connections.forEach(s => {
+            s.emit('connections_changed', connections.length);
+        })
     });
 })
 
