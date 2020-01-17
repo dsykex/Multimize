@@ -23,14 +23,6 @@ io.on('connection', socket => {
 
     socket.emit('width_value', width);
 
-    setInterval(() => {
-        if(width > 0)
-        {
-            width -= (connections.length * 0.5);
-            socket.emit('width_value', width);
-        }
-    }, 300);
-
     socket.on('width_changed', val => {
         width += val;
 
