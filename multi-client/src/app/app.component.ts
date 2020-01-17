@@ -11,7 +11,7 @@ export class AppComponent {
 
   socket: any;
   width: number;
-  updateVal: number = 0.5;
+  updateVal: number = 1;
   connections: number = 0;
 
   adj = 'people';

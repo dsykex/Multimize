@@ -21,13 +21,12 @@ io.on('connection', socket => {
     console.log('New client connected ('+connections.length+' connections).');
     socket.emit('connections_changed', connections.length);
 
-    socket.emit('con_msg', 'Welcome to greatss.. <3');
     socket.emit('width_value', width);
 
-    decrementInterval = setInterval(() => {
-        if(width > 0)
+    setInterval(() => {
+        if(width > 10)
         {
-            width -= (connections.length * 2);
+            width -= (connections.length * 0.5);
             socket.emit('width_value', width);
         }
     }, 500);
