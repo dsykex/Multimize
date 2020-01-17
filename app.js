@@ -20,9 +20,11 @@ io.on('connection', socket => {
     console.log('New client connected ('+connections.length+' connections).');
 
     socket.emit('con_msg', 'Welcome to greatss.. <3');
-
     socket.on('width_changed', val => {
         let newWidth = width += val;
+
+        if(newWidth >= 100)
+            newWidth=0;
         socket.emit('width_value', newWidth);
     })
 

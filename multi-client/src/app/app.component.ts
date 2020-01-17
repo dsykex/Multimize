@@ -11,7 +11,7 @@ export class AppComponent {
 
   socket: any;
   width: number = 50;
-  updateVal: number = 5;
+  updateVal: number = 1;
   constructor()
   {
     this.socket = io('https://mighty-thicket-03422.herokuapp.com/');
