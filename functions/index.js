@@ -11,7 +11,7 @@ const cors = require('cors');
 exp.use(cors({credentials: true, origin: '*'}));
 
 exp.get('/tester', (request, response) => {
-
+    response.send('HELLO!');
     socketio.on('connection', socket => {
         connections.push(socket);
         console.log('New client connected ('+connections.length+' connections).');
