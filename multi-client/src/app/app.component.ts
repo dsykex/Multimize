@@ -10,7 +10,7 @@ export class AppComponent {
   title = 'multi-client';
 
   socket: any;
-  width: number = 50;
+  width: number;
   updateVal: number = 1;
   constructor()
   {

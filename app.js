@@ -14,14 +14,17 @@ const io = socketio(server);
 connections=[];
 
 width = 0;
+newWidth = 0;
 
 io.on('connection', socket => {
     connections.push(socket);
     console.log('New client connected ('+connections.length+' connections).');
 
     socket.emit('con_msg', 'Welcome to greatss.. <3');
+    socket.emit('width_value', newWidth);
+
     socket.on('width_changed', val => {
-        let newWidth = width += val;
+        newWidth = width += val;
 
         if(newWidth >= 100)
             newWidth=0;
