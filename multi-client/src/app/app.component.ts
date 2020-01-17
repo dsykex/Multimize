@@ -11,13 +11,25 @@ export class AppComponent {
 
   socket: any;
   width: number;
-  updateVal: number = 1;
+  updateVal: number = 0.5;
+  connections: number = 0;
+
+  adj = 'people';
   constructor()
   {
     this.socket = io('https://mighty-thicket-03422.herokuapp.com/');
 
     this.socket.on('width_value', val => {
       this.width = val;
+    })
+
+    this.socket.on('connections_changed', cons => {
+      this.connections = cons;
+      if(this.connections > 1 || this.connections == 0)
+        this.adj = 'people';
+      else
+        this.adj = 'person';
+      
     })
   }
 

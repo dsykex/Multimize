@@ -19,22 +19,33 @@ newWidth = 0;
 io.on('connection', socket => {
     connections.push(socket);
     console.log('New client connected ('+connections.length+' connections).');
+    socket.emit('connections_changed', connections.length);
 
     socket.emit('con_msg', 'Welcome to greatss.. <3');
-    socket.emit('width_value', newWidth);
+    socket.emit('width_value', width);
+
+    decrementInterval = setInterval(() => {
+        if(width > 0)
+        {
+            width -= (connections.length * 2);
+            socket.emit('width_value', width);
+        }
+    }, 500);
 
     socket.on('width_changed', val => {
-        newWidth = width += val;
+        width += val;
 
-        if(newWidth >= 100)
-            newWidth=0;
-        socket.emit('width_value', newWidth);
+        if(width >= 100)
+           width=0;
+        socket.emit('width_value', width);
     })
 
     socket.on('disconnect', () => {
         console.log('Client disconnected')
         connections.splice(connections.indexOf(socket), 1);
         console.log('Disconnected: %s sockets connected.', connections.length);
+
+        socket.emit('connections_changed', connections.length);
     });
 })
 
