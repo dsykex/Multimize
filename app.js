@@ -24,12 +24,12 @@ io.on('connection', socket => {
     socket.emit('width_value', width);
 
     setInterval(() => {
-        if(width > 10)
+        if(width > 0)
         {
             width -= (connections.length * 0.5);
             socket.emit('width_value', width);
         }
-    }, 500);
+    }, 300);
 
     socket.on('width_changed', val => {
         width += val;
