@@ -1,7 +1,7 @@
 const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
-import {server_events} from './server_config';
+import './server_config';
 
 
 const PORT_NUMBER = process.env.PORT || 7777;
