@@ -17,7 +17,6 @@ connections=[];
 width = 0;
 newWidth = 0;
 
-console.log('Configs for server: '+Object.keys(scnf.server_events)[0]);
 
 io.on('connection', socket => {
     connections.push(socket);
@@ -28,11 +27,19 @@ io.on('connection', socket => {
         s.emit('connections_changed', connections.length);
     })
 
-    
+    let scnf_events = Object.keys(scnf.server_events);
+
+    scnf_events.forEach(e => {  
+        socket.on(e, val => {
+            connections.forEach(s => {
+                s.emit(scnf.server_events[e].emitter, scnf.server_events[e].callback._(val));
+            })
+        })
+    })
 
     socket.emit('width_value', width);
 
-    socket.on('width_changed', val => {
+    /*socket.on('width_changed', val => {
         width += val;
 
         if(width >= 100)
@@ -42,7 +49,7 @@ io.on('connection', socket => {
             s.emit('width_value', width);
         })
         
-    })
+    })*/
 
     socket.on('disconnect', () => {
         console.log('Client disconnected')
