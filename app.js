@@ -1,8 +1,7 @@
 const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
-import './server_config';
-
+const scnf = require('./server_config');
 
 const PORT_NUMBER = process.env.PORT || 7777;
 
@@ -18,7 +17,7 @@ connections=[];
 width = 0;
 newWidth = 0;
 
-console.log('Configs for server: '+server_events.length);
+console.log('Configs for server: '+scnf.server_events.length);
 
 io.on('connection', socket => {
     connections.push(socket);

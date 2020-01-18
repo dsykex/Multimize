@@ -1,4 +1,4 @@
-export const server_variables = {
+const server_variables = {
     width: 0
 }
 
