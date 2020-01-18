@@ -1,8 +1,10 @@
+'use strict'
+
 const server_variables = {
     width: 0
 }
 
-export const server_events = {
+exports.server_events = {
     width_changed: {
         emitter: 'width_value',
         callback: {
