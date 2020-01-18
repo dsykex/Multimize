@@ -17,7 +17,7 @@ connections=[];
 width = 0;
 newWidth = 0;
 
-console.log('Configs for server: '+scnf.server_events);
+console.log('Configs for server: '+Object.keys(scnf.server_events));
 
 io.on('connection', socket => {
     connections.push(socket);
