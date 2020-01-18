@@ -1,6 +1,8 @@
 const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
+import {server_events} from './server_config';
+
 
 const PORT_NUMBER = process.env.PORT || 7777;
 
@@ -16,6 +18,8 @@ connections=[];
 width = 0;
 newWidth = 0;
 
+console.log('Configs for server: '+server_events.length);
+
 io.on('connection', socket => {
     connections.push(socket);
     console.log('New client connected ('+connections.length+' connections).');
@@ -24,6 +28,7 @@ io.on('connection', socket => {
        // s.emit('width_value', width);
         s.emit('connections_changed', connections.length);
     })
+
     
 
     socket.emit('width_value', width);

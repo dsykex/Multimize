@@ -31,10 +31,19 @@ export class AppComponent {
         this.adj = 'person is';
       
     })
+
+    functions['derp']();
   }
 
   updateWidth(val)
   {
     this.socket.emit('width_changed', val)
   }
+}
+
+export const functions = {
+  derp: () => {
+    console.log(22);
+  },
+
 }
