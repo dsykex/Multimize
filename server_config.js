@@ -11,7 +11,7 @@ exports.server_events = {
             args: ['width'],
             _: (val) => {
                 server_variables.width += val;
-                if(server_variables.width > 5)
+                if(server_variables.width > 100)
                     server_variables.width = 0;
 
                 return server_variables.width;
