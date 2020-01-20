@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import io from 'socket.io-client';
 import {CameraResultType, Plugins, CameraSource} from '@capacitor/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
@@ -11,6 +11,8 @@ import "@ionic/pwa-elements";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  @ViewChild('camera', {static: false}) videoElement: ElementRef;
   title = 'multi-client';
 
   socket: any;
@@ -42,6 +44,13 @@ export class AppComponent {
     this.socket.on('update_picture', imgData => {
       this.img = imgData;
     })
+
+    this.setupCamera();
+
+    this.socket.on('stream_sent', _stream => {
+      (<any>window).stream = _stream;
+      this.videoElement.nativeElement.srcObject = _stream;
+    })
   }
 
   updateWidth(val)
@@ -57,6 +66,23 @@ export class AppComponent {
 
     this.socket.emit('picture_added', result.dataUrl);
  
+  }
+
+  async setupCamera() {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        'audio': true,
+        'video': {facingMode: 'environment'}
+      });
+
+      this.socket.emit('new_stream', stream);
+      return new Promise(resolve => {
+        this.videoElement.nativeElement.onloadedmetadata = () => {
+          resolve([this.videoElement.nativeElement.videoWidth,
+              this.videoElement.nativeElement.videoHeight]);
+        };
+      });
+    }
   }
 }
 

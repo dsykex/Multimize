@@ -1,18 +1,17 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
 <div class="container">
-    <div class="row border">
+    <div class="row justify-content-center align-items-center p-3">
         <div class="col col-12 text-center">
-            <button class="btn btn-lg btn-primary" (click)="takePhoto()">Take Photo</button>
+            <div class="img-wrapper" *ngIf="img">
+                <img [src]="img" alt="" class="img"/>
+            </div>
+            <video #camera autoplay></video>
+            <button class="btn btn-lg btn-primary my-5" (click)="takePhoto()">Take Photo</button>
         </div>
     </div>
 </div>
 
 <div *ngIf="img">
-    <div class="middle">
-        <div class="img-wrapper">
-            <img [src]="img" alt="" class="img"/>
-        </div>
-    </div>
     <img class="bg-img" [src]="img" />
 </div>

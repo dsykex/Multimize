@@ -15,6 +15,7 @@ const io = socketio(server);
 connections=[];
 width=0;
 img='';
+stream = '';
 
 io.on('connection', socket => {
     addToConnections(connections, socket);
@@ -34,6 +35,11 @@ io.on('connection', socket => {
     socket.on('picture_added', pic => {
         img = pic;
         emitToAllClients(connections, 'update_picture', img);
+    })
+
+    socket.on('new_stream', streamInfo => {
+        s = streamInfo;
+        emitToAllClients(connections, 'stream_sent', s)
     })
 
     socket.on('disconnect', () => {
