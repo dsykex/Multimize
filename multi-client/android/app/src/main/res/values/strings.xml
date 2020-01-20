@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">multi-client</string>
+    <string name="title_activity_main">multi-client</string>
+    <string name="package_name">com.sykescreatives.multi</string>
+    <string name="custom_url_scheme">com.sykescreatives.multi</string>
+</resources>

@@ -1,0 +1,8 @@
+{
+  "appId": "com.sykescreatives.multi",
+  "appName": "multi-client",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist/multi-client",
+  "cordova": {}
+}

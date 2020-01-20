@@ -1,13 +1,18 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
 <div class="container">
-    <div class="row">
+    <div class="row border">
         <div class="col col-12 text-center">
-            <h1 class="display-2">Raise the bar!</h1>
-            <div class="bar" [ngStyle]="{'width': width+'%'}"></div>
-            <hr class="w-50">
-            <button class="btn btn-lg btn-primary my-4" (click)="updateWidth(updateVal)">Raise</button>
-            <p class="adj">{{connections}} {{adj}} raising the bar right now!</p>
+            <button class="btn btn-lg btn-primary" (click)="takePhoto()">Take Photo</button>
         </div>
     </div>
+</div>
+
+<div *ngIf="img">
+    <div class="middle">
+        <div class="img-wrapper">
+            <img [src]="img" alt="" class="img"/>
+        </div>
+    </div>
+    <img class="bg-img" [src]="img" />
 </div>

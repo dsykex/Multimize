@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import io from 'socket.io-client';
+import {CameraResultType, Plugins, CameraSource} from '@capacitor/core';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import "@ionic/pwa-elements";
+
 
 @Component({
   selector: 'app-root',
@@ -15,6 +19,9 @@ export class AppComponent {
   connections: number = 0;
 
   adj = 'people';
+
+  img: SafeResourceUrl;
+
   constructor()
   {
     this.socket = io('https://mighty-thicket-03422.herokuapp.com/');
@@ -32,12 +39,24 @@ export class AppComponent {
       
     })
 
-    functions['derp']();
+    this.socket.on('update_picture', imgData => {
+      this.img = imgData;
+    })
   }
 
   updateWidth(val)
   {
     this.socket.emit('width_changed', val)
+  }
+
+  async takePhoto()
+  {
+    const {Camera} = Plugins;
+    const result = await Camera.getPhoto({resultType: CameraResultType.DataUrl, quality:100, correctOrientation:true});
+    this.img = result.dataUrl;  
+
+    this.socket.emit('picture_added', result.dataUrl);
+ 
   }
 }
 

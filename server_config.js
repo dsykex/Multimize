@@ -1,35 +1,30 @@
 'use strict'
 
-const server_variables = {
-    width: 0
+// Server-side variables
+
+const _ = {
+    width: 0,
+    //connections: []
 }
+
+// ----------- //
 
 exports.server_events = {
     width_changed: {
         emitter: 'width_value',
-        callback: {
-            args: ['width'],
-            _: (val) => {
-                server_variables.width += val;
-                if(server_variables.width > 100)
-                    server_variables.width = 0;
+        _: (val) => {
+            _.width += val;
+            if(_.width > 100)
+                _.width = 0;
+           
+            return _.width;
+        }
+    },
 
-                return server_variables.width;
-            }
+    width_value: {
+        emitOnInit: true,
+        _: (val) => {
+            return _.width;
         }
     }
-
-    /*disconnected: {
-        emitter: 'width_value',
-        callback: {
-            args: ['width'],
-            _: (val) => {
-                server_variables.width += val;
-                if(server_variables.width > 100)
-                    server_variables.width = 0;
-
-                return server_variables.width;
-            }
-        }
-    }*/
 }

@@ -1,7 +1,7 @@
 const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
-const scnf = require('./server_config');
+const sconf = require('./server_config');
 
 const PORT_NUMBER = process.env.PORT || 7777;
 
@@ -13,52 +13,52 @@ const server = express()
 const io = socketio(server);
 
 connections=[];
-
-width = 0;
-newWidth = 0;
-
+width=0;
+img='';
 
 io.on('connection', socket => {
-    connections.push(socket);
-    console.log('New client connected ('+connections.length+' connections).');
-    socket.emit('connections_changed', connections.length);
-    connections.forEach(s => {
-       // s.emit('width_value', width);
-        s.emit('connections_changed', connections.length);
-    })
-
-    let scnf_events = Object.keys(scnf.server_events);
-
-    scnf_events.forEach(e => {  
-        socket.on(e, val => {
-            connections.forEach(s => {
-                s.emit(scnf.server_events[e].emitter, scnf.server_events[e].callback._(val));
-            })
-        })
-    })
-
+    addToConnections(connections, socket);
     socket.emit('width_value', width);
+    socket.emit('update_picture', img);
 
-    /*socket.on('width_changed', val => {
+    socket.on('width_changed', val => {
         width += val;
 
         if(width >= 100)
            width=0;
         
-        connections.forEach(s => {
-            s.emit('width_value', width);
-        })
+        emitToAllClients(connections,'width_value',width);
         
-    })*/
+    })
+
+    socket.on('picture_added', pic => {
+        img = pic;
+        emitToAllClients(connections, 'update_picture', img);
+    })
 
     socket.on('disconnect', () => {
-        console.log('Client disconnected')
-        connections.splice(connections.indexOf(socket), 1);
-        console.log('Disconnected: %s sockets connected.', connections.length);
-
-        connections.forEach(s => {
-            s.emit('connections_changed', connections.length);
-        })
+       removeFromConnections(connections, socket);
     });
 })
 
+function addToConnections(connections, socket){
+    connections.push(socket);
+    console.log('New client connected ('+connections.length+' connections).');
+    emitToAllClients(connections, 'connections_changed', connections.length)
+}
+
+function removeFromConnections(connections, socket) {
+    connections.splice(connections.indexOf(socket), 1);
+    console.log('Disconnected: %s sockets connected.', connections.length);
+    emitToAllClients(connections, 'connections_changed', connections.length)
+
+    connections.forEach(s => {
+        s.emit('connections_changed', connections.length);
+    })
+}
+
+function emitToAllClients (connections, emitter, data) {
+    connections.forEach(s => {
+        s.emit(emitter, data);
+    })
+}
