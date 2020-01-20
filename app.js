@@ -39,6 +39,7 @@ io.on('connection', socket => {
 
     socket.on('new_stream', streamInfo => {
         s = streamInfo;
+        console.log(s);
         emitToAllClients(connections, 'stream_sent', s)
     })
 
