@@ -15,7 +15,7 @@ const io = socketio(server);
 connections=[];
 width=0;
 img='';
-stream = '';
+s = '';
 
 io.on('connection', socket => {
     addToConnections(connections, socket);

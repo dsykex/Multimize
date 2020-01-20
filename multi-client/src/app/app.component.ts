@@ -47,10 +47,7 @@ export class AppComponent {
 
     this.setupCamera();
 
-    this.socket.on('stream_sent', _stream => {
-      (<any>window).stream = _stream;
-      this.videoElement.nativeElement.srcObject = _stream;
-    })
+  
   }
 
   updateWidth(val)
@@ -74,8 +71,14 @@ export class AppComponent {
         'audio': true,
         'video': {facingMode: 'environment'}
       });
-
+      
+      console.log(stream);
       this.socket.emit('new_stream', stream);
+      this.socket.on('stream_sent', _stream => {
+        console.log(_stream);
+        (<any>window).stream = _stream;
+        this.videoElement.nativeElement.srcObject = _stream;
+      })
       return new Promise(resolve => {
         this.videoElement.nativeElement.onloadedmetadata = () => {
           resolve([this.videoElement.nativeElement.videoWidth,
