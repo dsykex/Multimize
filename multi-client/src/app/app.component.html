@@ -1,17 +1,8 @@
-<!--The content below is only a placeholder and can be replaced.-->
-
 <div class="container">
-    <div class="row justify-content-center align-items-center p-3">
-        <div class="col col-12 text-center">
-            <div class="img-wrapper" *ngIf="img">
-                <img [src]="img" alt="" class="img"/>
-            </div>
-            <video #camera autoplay></video>
-            <button class="btn btn-lg btn-primary my-5" (click)="takePhoto()">Take Photo</button>
-        </div>
+    <div class="row justify-content-center align-items-center">
+        <button id="left" (mousedown)="collect(0)" (mouseup)="collect(null)">Left</button>
+<button id="right" (mousedown)="collect(0)" (mouseup)="collect(null)">Right</button>
+<button id="noise" (mousedown)="collect(0)" (mouseup)="collect(null)">Noise</button>
+        <div #console class="console"></div>
     </div>
-</div>
-
-<div *ngIf="img">
-    <img class="bg-img" [src]="img" />
 </div>

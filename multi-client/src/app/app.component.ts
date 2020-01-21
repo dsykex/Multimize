@@ -4,6 +4,7 @@ import {CameraResultType, Plugins, CameraSource} from '@capacitor/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import "@ionic/pwa-elements";
 
+declare var speechCommands;
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import "@ionic/pwa-elements";
 export class AppComponent {
 
   @ViewChild('camera', {static: false}) videoElement: ElementRef;
+  @ViewChild('console', {static: false}) console: ElementRef;
   title = 'multi-client';
 
   socket: any;
@@ -23,9 +25,12 @@ export class AppComponent {
   adj = 'people';
 
   img: SafeResourceUrl;
-
+  recognizer: any;
+  examples=[];
   constructor()
   {
+    this.initRezognizer();
+
     this.socket = io('https://mighty-thicket-03422.herokuapp.com/');
 
     this.socket.on('width_value', val => {
@@ -44,10 +49,37 @@ export class AppComponent {
     this.socket.on('update_picture', imgData => {
       this.img = imgData;
     })
+  }
 
-    this.setupCamera();
+  collect(label) {
+    if (this.recognizer.isListening()) {
+      return this.recognizer.stopListening();
+    }
+    if (label == null) {
+      return;
+    }
+    this.recognizer.listen(async ({spectrogram: {frameSize, data}}) => {
+      let vals = this.normalize(data.subarray(-frameSize * 3));
+      //console.log(this.examples);
+      this.examples.push({vals, label});
+      this.console.nativeElement.textContent =
+          `${this.examples.length} examples collected`;
+    }, {
+      overlapFactor: 0.999,
+      includeSpectrogram: true,
+      invokeCallbackOnNoiseAndUnknown: true
+    });
+   }
 
-  
+   normalize(x) {
+    const mean = -100;
+    const std = 10;
+    return x.map(x => (x - mean) / std);
+   }
+  async initRezognizer(){
+    this.recognizer = speechCommands.create('BROWSER_FFT');
+    await this.recognizer.ensureModelLoaded();
+    //this.predictWord();
   }
 
   updateWidth(val)
@@ -63,29 +95,6 @@ export class AppComponent {
 
     this.socket.emit('picture_added', result.dataUrl);
  
-  }
-
-  async setupCamera() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        'audio': true,
-        'video': {facingMode: 'environment'}
-      });
-      
-      console.log(stream);
-      this.socket.emit('new_stream', stream);
-      this.socket.on('stream_sent', _stream => {
-        console.log(_stream);
-        (<any>window).stream = _stream;
-        this.videoElement.nativeElement.srcObject = _stream;
-      })
-      return new Promise(resolve => {
-        this.videoElement.nativeElement.onloadedmetadata = () => {
-          resolve([this.videoElement.nativeElement.videoWidth,
-              this.videoElement.nativeElement.videoHeight]);
-        };
-      });
-    }
   }
 }
 
