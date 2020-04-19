@@ -29,7 +29,13 @@ io.on('connection', socket => {
            width=0;
         
         emitToAllClients(connections,'width_value',width);
+    })
+
+    //  YODO!! TODO!!
+    socket.on('msg_rcvd', msg => {
         
+
+        emitToAllClients(msg)
     })
 
     socket.on('picture_added', pic => {
